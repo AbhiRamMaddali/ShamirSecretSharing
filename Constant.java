@@ -3,7 +3,7 @@ import java.math.BigInteger;
 import java.util.*;
 
 
-public class ConstantTerm {
+public class Constant{
 
   static class Pt { BigInteger x, y; Pt(BigInteger x, BigInteger y){ this.x=x; this.y=y; } }
 
