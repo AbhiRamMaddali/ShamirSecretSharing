@@ -25,16 +25,16 @@ public class ConstantTerm {
     return s;
   }
 
-  // Parse the specific JSON: keys.k, numeric objects with base/value
+  
   static class Parsed {
     int k;
     List<Pt> pts = new ArrayList<>();
   }
 
   static Parsed parse(String json) {
-    // Remove spaces around separators to simplify
+  
     String s = json;
-    // Extract k
+    
     int keysIdx = s.indexOf("\"keys\"");
     int kStart = s.indexOf("\"k\"", keysIdx);
     int colon  = s.indexOf(':', kStart);
@@ -43,7 +43,7 @@ public class ConstantTerm {
     int endNum = (comma==-1?close:Math.min(comma, close));
     int k = Integer.parseInt(s.substring(colon+1, endNum).trim());
 
-    // Scan for each top-level "number": { "base": "...", "value": "..." }
+   
     List<Pt> pts = new ArrayList<>();
     int idx = 0;
     while (true){
@@ -53,7 +53,7 @@ public class ConstantTerm {
       if (q2==-1) break;
       String key = s.substring(q1+1, q2);
       idx = q2+1;
-      // Only numeric top-level keys
+    
       boolean numeric = key.chars().allMatch(Character::isDigit);
       if (!numeric) continue;
       int objStart = s.indexOf('{', idx);
@@ -68,13 +68,11 @@ public class ConstantTerm {
       String obj = s.substring(objStart, objEnd+1);
       idx = objEnd+1;
 
-      // extract base
       int bIdx = obj.indexOf("\"base\"");
       int bCol = obj.indexOf(':', bIdx);
       int bCom = obj.indexOf(',', bCol);
       String bStr = unq(obj.substring(bCol+1, bCom==-1?obj.length()-1:bCom).trim());
 
-      // extract value
       int vIdx = obj.indexOf("\"value\"");
       int vCol = obj.indexOf(':', vIdx);
       int vEnd = obj.indexOf('}', vCol);
@@ -90,7 +88,7 @@ public class ConstantTerm {
   }
 
   static BigInteger lagrangeAtZero(List<Pt> pts, int k){
-    // unique xs
+   
     LinkedHashMap<BigInteger, BigInteger> map = new LinkedHashMap<>();
     for (Pt p: pts) map.putIfAbsent(p.x, p.y);
     List<BigInteger> xs = new ArrayList<>(map.keySet()).subList(0, k);
